@@ -1,5 +1,8 @@
-import os, requests
+import os, requests, logging
 from flask import Flask, request, jsonify
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -33,12 +36,13 @@ def format_alert(payload):
     return f"{emoji} *{payload.get('title', '')}*\n{payload.get('message', '')}"
 
 def send_wa(to, msg):
-    requests.post(API_URL, headers=HEADERS, json={
+    resp = requests.post(API_URL, headers=HEADERS, json={
         "messaging_product": "whatsapp",
         "to": to.strip(),
         "type": "text",
         "text": {"body": msg}
     }, timeout=10)
+    logger.info(f"META RESPONSE for {to}: {resp.status_code} — {resp.text}")
 
 @app.route("/alert", methods=["POST"])
 def alert():
@@ -46,6 +50,7 @@ def alert():
     if not payload:
         return jsonify({"error": "bad json"}), 400
     msg = format_alert(payload)
+    logger.info(f"Sending to {len(SUBSCRIBERS)} subscribers")
     for n in SUBSCRIBERS:
         if n.strip():
             send_wa(n, msg)
