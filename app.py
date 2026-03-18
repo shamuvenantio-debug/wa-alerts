@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-TOKEN       = "EAAWM8gB6LR8BQbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2yIuBcNDeiDRae3ZCTlQeZAy4uf80Y1lNwqJQJZCXZBRg50hLCacsmfVe76N6mjfOIxBzvhBA7pHeX7cm7DPXHp25BcTCU24MvXwETiZBA2SU0bc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2y"
+TOKEN       = "EAAWM8gB6LR8BQZCAYnWaJeAHO7WHbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2y0WQqbcGbBSAXkJeaBYulgjvsgfoFdeWR5PRXglhw4zwq4SbO1r41zZCQgxyTKDt877YZBox60Bewldvts9GbuQiZCcRzhsOasHquAEwzDrIB5lbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2yvAbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2yLZBZCKgVwSx4zYkBJxZCO1zxB4eyn8KZBwEP3WqHfQZDZD"
 PHONE_ID    = os.environ["PHONE_NUMBER_ID"]
 SUBSCRIBERS = os.environ.get("SUBSCRIBERS", "").split(",")
 
