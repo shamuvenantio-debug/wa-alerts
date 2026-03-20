@@ -6,12 +6,9 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-TOKEN       = "EAAWM8gB6LR8BQZCAYnWaJeAHO7WHbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2y0WQqbcGbBSAXkJeaBYulgjvsgfoFdeWR5PRXglhw4zwq4SbO1r41zZCQgxyTKDt877YZBox60Bewldvts9GbuQiZCcRzhsOasHquAEwzDrIB5lbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2yvAbc1q5mlw63yd2u2cn0hs6jnzf2gljhr486u3dkgm2yLZBZCKgVwSx4zYkBJxZCO1zxB4eyn8KZBwEP3WqHfQZDZD"
-PHONE_ID    = os.environ["PHONE_NUMBER_ID"]
-SUBSCRIBERS = os.environ.get("SUBSCRIBERS", "").split(",")
-
-API_URL = f"https://graph.facebook.com/v19.0/{PHONE_ID}/messages"
-HEADERS = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
+INSTANCE_ID  = os.environ["GREEN_INSTANCE_ID"]
+API_TOKEN    = os.environ["GREEN_API_TOKEN"]
+SUBSCRIBERS  = os.environ.get("SUBSCRIBERS", "").split(",")
 
 STATE_EMOJI = {"alerting": "🔴", "ok": "✅", "no_data": "⚠️", "pending": "🟡"}
 
@@ -36,13 +33,12 @@ def format_alert(payload):
     return f"{emoji} *{payload.get('title', '')}*\n{payload.get('message', '')}"
 
 def send_wa(to, msg):
-    resp = requests.post(API_URL, headers=HEADERS, json={
-        "messaging_product": "whatsapp",
-        "to": to.strip(),
-        "type": "text",
-        "text": {"body": msg}
+    url = f"https://api.green-api.com/waInstance{INSTANCE_ID}/sendMessage/{API_TOKEN}"
+    resp = requests.post(url, json={
+        "chatId": f"{to}@c.us",
+        "message": msg
     }, timeout=10)
-    logger.info(f"META RESPONSE for {to}: {resp.status_code} — {resp.text}")
+    logger.info(f"GREEN API RESPONSE for {to}: {resp.status_code} — {resp.text}")
 
 @app.route("/alert", methods=["POST"])
 def alert():
